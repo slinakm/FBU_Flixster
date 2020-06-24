@@ -38,8 +38,7 @@ public class Movie {
     }
 
     public String getPoster_path() {
-        return "https://image.tmdb.org/t/p/" +
-                poster_sizes.get(poster_sizes.size()-1) + "/" + poster_path;
+        return "https://image.tmdb.org/t/p/" + poster_sizes.get(poster_sizes.size()-1) + "/" + poster_path;
     }
 
     public String getTitle() {

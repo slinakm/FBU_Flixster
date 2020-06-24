@@ -1,12 +1,15 @@
 package com.example.flixter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flixter.adapters.MovieAdapter;
 import com.example.flixter.models.Movie;
 
 import org.json.JSONArray;
@@ -33,17 +36,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        movies = new ArrayList<>();
+
         AsyncHttpClient client = new AsyncHttpClient();
+        populateMovieWImgSize(client);
+
+        RecyclerView mvRView = findViewById(R.id.movieList);
+        final MovieAdapter mvAdapter = new MovieAdapter(this, movies);
+        mvRView.setAdapter(mvAdapter);
+        mvRView.setLayoutManager(new LinearLayoutManager(this));
 
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG, "onSuccess");
+                Log.d(TAG, "onSuccess Now Playing");
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results:" + results.toString());
-                    movies = Movie.fromJsonArray(results);
+                    movies.addAll(Movie.fromJsonArray(results));
+                    mvAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json exception for movie results", e);
                     e.printStackTrace();
@@ -52,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d(TAG, "onFailure");
+                Log.d(TAG, "onFailure Now Playing");
             }
         });
+    }
 
+    public static void populateMovieWImgSize(AsyncHttpClient client){
         client.get(CONFIGURATION_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.d(TAG, "onSuccess");
+                Log.d(TAG, "onSuccess Images");
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     JSONObject images = jsonObject.getJSONObject("images");
@@ -68,10 +82,12 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray posterSizes = images.getJSONArray("poster_sizes");
                     ArrayList<String> posterArr = createStringArrayFromJSON(posterSizes);
                     Movie.setPoster_sizes(posterArr);
+                    Log.i(TAG, "Poster sizes:" + posterArr.toString());
 
                     JSONArray backdropSizes = images.getJSONArray("backdrop_sizes");
                     ArrayList<String> backdropArr = createStringArrayFromJSON(backdropSizes);
                     Movie.setBackdrop_sizes(backdropArr);
+                    Log.i(TAG, "Backdrop sizes:" + backdropArr.toString());
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json exception for configuration results", e);
                     e.printStackTrace();
@@ -80,15 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.d(TAG, "onFailure");
+                Log.d(TAG, "onFailure Images");
             }
         });
     }
 
     public static ArrayList<String> createStringArrayFromJSON(JSONArray jsonArray) throws JSONException {
-        ArrayList<String> array = new ArrayList<String>();
+        ArrayList<String> array = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            array.add(jsonArray.getJSONObject(i).toString());
+            array.add(jsonArray.getString(i));
         }
         return array;
     }
