@@ -12,7 +12,7 @@ public class Movie {
     private String title;
 
     public String getPoster_path() {
-        return poster_path;
+        return String.format("",poster_path);
     }
 
     public String getTitle() {
