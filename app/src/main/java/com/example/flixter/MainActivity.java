@@ -10,6 +10,7 @@ import android.util.Log;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixter.adapters.MovieAdapter;
+import com.example.flixter.databinding.ActivityMainBinding;
 import com.example.flixter.models.Movie;
 
 import org.json.JSONArray;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot()); //R.layout.activity_main
 
         movies = new ArrayList<>();
 
@@ -81,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONArray posterSizes = images.getJSONArray("poster_sizes");
                     ArrayList<String> posterArr = createStringArrayFromJSON(posterSizes);
-                    Movie.setPoster_sizes(posterArr);
+                    Movie.setPosterSizes(posterArr);
                     Log.i(TAG, "Poster sizes:" + posterArr.toString());
 
                     JSONArray backdropSizes = images.getJSONArray("backdrop_sizes");
                     ArrayList<String> backdropArr = createStringArrayFromJSON(backdropSizes);
-                    Movie.setBackdrop_sizes(backdropArr);
+                    Movie.setBackdropSizes(backdropArr);
                     Log.i(TAG, "Backdrop sizes:" + backdropArr.toString());
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json exception for configuration results", e);
