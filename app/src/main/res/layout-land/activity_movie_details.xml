@@ -7,13 +7,14 @@
 
     <ImageView
         android:id="@+id/tvPoster"
-        android:layout_width="150dp"
+        android:layout_width="375dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/movie_image_item"
         android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOverview"
         tools:srcCompat="@tools:sample/avatars" />
@@ -52,14 +53,14 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/real_movie_poster"
-        app:layout_constraintBottom_toTopOf="@+id/tvPoster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvOverview"
-        app:layout_constraintTop_toTopOf="@+id/tvTitle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,10 +24,8 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CONFIGURATION_URL =
-            "https://api.themoviedb.org/3/configuration?api_key=970a3c4389490ee855a71b051c6e0574";
-    public static final String NOW_PLAYING_URL =
-            "https://api.themoviedb.org/3/movie/now_playing?api_key=970a3c4389490ee855a71b051c6e0574";
+    public static String CONFIGURATION_URL;
+    public static String NOW_PLAYING_URL;
     public static final String TAG = "MainActivity";
 
     private List<Movie> movies;
@@ -37,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot()); //R.layout.activity_main
+
+        CONFIGURATION_URL =
+                "https://api.themoviedb.org/3/configuration?api_key="
+                        + getString(R.string.tmdb_api_key);
+        NOW_PLAYING_URL =
+                "https://api.themoviedb.org/3/movie/now_playing?api_key="
+                        + getString(R.string.tmdb_api_key);
 
         movies = new ArrayList<>();
 
