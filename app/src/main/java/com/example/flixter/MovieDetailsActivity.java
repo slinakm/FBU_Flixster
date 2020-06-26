@@ -22,6 +22,9 @@ import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixter.databinding.ActivityMovieDetailsBinding;
 import com.example.flixter.models.Movie;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +43,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     RatingBar rbVoteAverage;
 
     Context context;
+
+    String videoKey;
+    String site;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,32 +72,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         //Sets up images
-        int placeholder;
-        String imageURL;
+        int placeholder = R.drawable.flicks_backdrop_placeholder;
+        String imageURL = movie.getBackdropPath();
         if (this.getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
-            placeholder = R.drawable.flicks_backdrop_placeholder;
-            imageURL = movie.getBackdropPath();
             Glide.with(this).
                     load(movie.getPosterPath()).
-                    transform(new RoundedCorners(40)).
+                    transform(new RoundedCorners(20)).
                     placeholder(R.drawable.flicks_movie_placeholder).
                     into(binding.imageView);
-        } else {
-            placeholder = R.drawable.flicks_movie_placeholder;
-            imageURL = movie.getPosterPath();
         }
 
         Glide.with(this).
                 load(imageURL).
-                transform(new RoundedCorners(40)).
+                transform(new RoundedCorners(20)).
                 placeholder(placeholder).
                 into(tvPoster);
+
 
         tvPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Get Video Key
                 final String videoURL = "https://api.themoviedb.org/3/movie/"
                         + movie.getId() + "/videos?api_key=" + getString(R.string.tmdb_api_key)
@@ -109,8 +110,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                             Log.i(TAG, "Video results: " + resultsArr);
 
                             JSONObject results = resultsArr.getJSONObject(0);
-                            String site = results.getString("site");
-                            String videoKey = results.getString("key");
+                            site = results.getString("site");
+                            videoKey = results.getString("key");
                             Log.d(TAG, "Video key: " + videoKey + " & Site: " + site);
 
                             // Create Intent
