@@ -1,5 +1,6 @@
 package com.example.flixter.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.flixter.MainActivity;
 import com.example.flixter.MovieDetailsActivity;
 import com.example.flixter.R;
+import com.example.flixter.databinding.ItemMovieBinding;
 import com.example.flixter.models.Movie;
 
 import org.parceler.Parcels;
@@ -27,10 +30,10 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    Context context;
+    Activity context;
     List<Movie> movies;
 
-    public MovieAdapter(Context context, List<Movie> movies) {
+    public MovieAdapter(Activity context, List<Movie> movies) {
         super();
         this.context = context;
         this.movies = movies;
@@ -41,8 +44,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("MovieAdapter", "onCreateViewHolder");
-        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        return new ViewHolder(movieView);
+        ItemMovieBinding binding =
+                ItemMovieBinding.inflate(context.getLayoutInflater(), parent, false);
+//        View movieView = binding.getRoot();
+// LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+        return new ViewHolder(binding);
     }
 
     // Bind new data at position to holder
@@ -59,25 +65,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
+    // Custom ViewHolders for Movies
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView title;
         TextView overview;
         ImageView poster;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
+        public ViewHolder(@NonNull ItemMovieBinding itemView) {
+            super(itemView.getRoot());
 
-            title = itemView.findViewById(R.id.tvTitle);
-            overview = itemView.findViewById(R.id.tvOverview);
-            poster = itemView.findViewById(R.id.tvPoster);
 
-            itemView.setOnClickListener(this);
+            title = itemView.tvTitle;
+            overview = itemView.tvOverview;
+            poster = itemView.tvPoster;
+
+            itemView.getRoot().setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             title.setText(movie.getTitle());
             overview.setText(movie.getOverview());
 
+            // Changes movie image based on orientation
             int placeholder;
             String imageURL;
             if (context.getResources().getConfiguration().orientation

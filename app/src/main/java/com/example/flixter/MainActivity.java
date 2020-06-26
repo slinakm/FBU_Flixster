@@ -43,11 +43,13 @@ public class MainActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         populateMovieWImgSize(client);
 
+        // Sets up Recycler View
         RecyclerView mvRView = findViewById(R.id.movieList);
         final MovieAdapter mvAdapter = new MovieAdapter(this, movies);
         mvRView.setAdapter(mvAdapter);
         mvRView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Gets list of now playing movies
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // An API call to get valid image sizes.
     public static void populateMovieWImgSize(AsyncHttpClient client){
         client.get(CONFIGURATION_URL, new JsonHttpResponseHandler() {
             @Override
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method to make a string array from a JSON Array
     public static ArrayList<String> createStringArrayFromJSON(JSONArray jsonArray) throws JSONException {
         ArrayList<String> array = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
