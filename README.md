@@ -34,7 +34,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Will add soon' />
+<img src='https://github.com/slinakm/FBU_Flixster/blob/master/landscape.gif' title='Video Walkthrough' width='' alt='Landscape' />
+
+<img src='https://github.com/slinakm/FBU_Flixster/blob/master/portrait.gif' title='Video Walkthrough' width='' alt='Portrait' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
