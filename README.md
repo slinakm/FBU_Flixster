@@ -28,7 +28,7 @@ The following **additional** features are implemented:
 * [x] Added release date to movie details page
 * [x] Landscape mode in the movie details page shows both the movie poster and backdrop.
 * [x] Implemented a scroll view in landscape mode's movie details page.
-* [x] Only attempts to play Youtube video if video URL supplied by TMDB is for Youtube.
+* [x] Only attempts to play Youtube video if video URL supplied by TMDB is for Youtube. Video thumbnail is also shown. 
 
 ## Video Walkthrough
 
