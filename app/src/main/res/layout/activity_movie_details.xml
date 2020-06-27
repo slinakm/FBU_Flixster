@@ -7,18 +7,45 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/tvPoster"
-        android:layout_width="350dp"
+
+    <RelativeLayout
+        android:id="@+id/relVideo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/movie_image_item"
-        android:scaleType="fitXY"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOverview"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        >
+
+        <ImageView
+            android:id="@+id/tvPoster"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_image_item"
+            android:scaleType="fitXY"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/imgPlayVideo"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:src="@drawable/video_play_btn" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:text="@string/original_date"
+        app:layout_constraintStart_toEndOf="@+id/rbVoteAverage"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <RatingBar
         android:id="@+id/rbVoteAverage"

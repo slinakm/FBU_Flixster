@@ -3,4 +3,5 @@
     <string name="movie_image_item">Image of Movie</string>
     <string name="real_movie_poster">Real Movie Poster</string>
     <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="original_date">YYYY-MM-DD</string>
 </resources>

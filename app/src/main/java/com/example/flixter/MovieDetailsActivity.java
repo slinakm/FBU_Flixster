@@ -41,6 +41,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvOverview;
     RatingBar rbVoteAverage;
+    TextView releaseDate;
 
     Context context;
 
@@ -57,6 +58,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvTitle = binding.tvTitle;
         tvOverview = binding.tvOverview;
         rbVoteAverage = binding.rbVoteAverage;
+        releaseDate = binding.releaseDate;
 
 
         movie = Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
@@ -67,13 +69,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getOverview());
             rbVoteAverage.setRating(movie.getVoteAverage().floatValue()/2.0f);
+            releaseDate.setText(movie.getReleaseDate());
         } catch (NullPointerException e) {
             Log.w("MovieDetailsActivity", "Can't find movie for new Activity");
         }
 
         //Sets up images
-        int placeholder = R.drawable.flicks_backdrop_placeholder;
-        String imageURL = movie.getBackdropPath();
+        final int placeholder = R.drawable.flicks_backdrop_placeholder;
+        final String imageURL = movie.getBackdropPath();
         if (this.getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             Glide.with(this).
@@ -89,46 +92,52 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 placeholder(placeholder).
                 into(tvPoster);
 
+        // Get Video Key
+        final String videoURL = "https://api.themoviedb.org/3/movie/"
+                + movie.getId() + "/videos?api_key=" + getString(R.string.tmdb_api_key)
+                + "&language=en-US";
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(videoURL, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, videoURL + " : onSuccess");
+                JSONObject jsonObject = json.jsonObject;
+                Log.i(TAG,"Video information: " + jsonObject.toString());
+                try {
+                    JSONArray resultsArr = jsonObject.getJSONArray("results");
+                    Log.i(TAG, "Video results: " + resultsArr);
+
+                    JSONObject results = resultsArr.getJSONObject(0);
+                    site = results.getString("site");
+                    videoKey = results.getString("key");
+                    Log.d(TAG, "Video key: " + videoKey + " & Site: " + site);
+
+                    Glide.with(context).
+                            load("https://img.youtube.com/vi/" + videoKey
+                                    + "/0.jpg").
+                            transform(new RoundedCorners(20)).
+                            placeholder(placeholder).
+                            into(tvPoster);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error getting results for Movie Trailer");
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Headers headers,
+                                  String response, Throwable throwable) {
+                Log.d(TAG, videoURL + " :" + "failure");
+            }
+        });
 
         tvPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get Video Key
-                final String videoURL = "https://api.themoviedb.org/3/movie/"
-                        + movie.getId() + "/videos?api_key=" + getString(R.string.tmdb_api_key)
-                        + "&language=en-US";
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.get(videoURL, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        Log.d(TAG, videoURL + " : onSuccess");
-                        JSONObject jsonObject = json.jsonObject;
-                        Log.i(TAG,"Video information: " + jsonObject.toString());
-                        try {
-                            JSONArray resultsArr = jsonObject.getJSONArray("results");
-                            Log.i(TAG, "Video results: " + resultsArr);
-
-                            JSONObject results = resultsArr.getJSONObject(0);
-                            site = results.getString("site");
-                            videoKey = results.getString("key");
-                            Log.d(TAG, "Video key: " + videoKey + " & Site: " + site);
-
-                            // Create Intent
-                            Intent intent = new Intent(context, MovieTrailerActivity.class);
-                            intent.putExtra("videoKey", videoKey);
-                            intent.putExtra("site", site);
-                            context.startActivity(intent);
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Error getting results for Movie Trailer");
-                        }
-                    }
-                    @Override
-                    public void onFailure(int statusCode, Headers headers,
-                                          String response, Throwable throwable) {
-                        Log.d(TAG, videoURL + " :" + "failure");
-                    }
-                });
+                // Create Intent
+                Intent intent = new Intent(context, MovieTrailerActivity.class);
+                intent.putExtra("videoKey", videoKey);
+                intent.putExtra("site", site);
+                context.startActivity(intent);
             }
         });
     }

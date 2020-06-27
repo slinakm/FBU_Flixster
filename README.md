@@ -24,8 +24,11 @@ The following **stretch** features are implemented:
 
 The following **additional** features are implemented:
 
-* [x] Gets configuration API in teh background in order to get correct image sizes
+* [x] Gets configuration API in the background in order to get correct image size
+* [x] Added release date to movie details page
 * [x] Landscape mode in the movie details page shows both the movie poster and backdrop.
+* [x] Implemented a scroll view in landscape mode's movie details page.
+* [x] Only attempts to play Youtube video if video URL supplied by TMDB is for Youtube.
 
 ## Video Walkthrough
 
@@ -39,6 +42,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 Describe any challenges encountered while building the app.
 
+I had some trouble getting Youtube Player to work: I had to try calling a few different methods in order to get my video to play.
+ 
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing

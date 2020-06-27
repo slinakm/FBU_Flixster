@@ -13,6 +13,7 @@ public class Movie {
     String posterPath;
     String backdropPath;
     String title;
+    String releaseDate;
     static List<String> posterSizes;
     static List<String> backdropSizes;
     Double voteAverage;
@@ -27,6 +28,7 @@ public class Movie {
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
         voteAverage = jsonObject.getDouble("vote_average");
+        releaseDate = jsonObject.getString("release_date");
         id = jsonObject.getInt("id");
     }
 
@@ -76,5 +78,9 @@ public class Movie {
 
     public int getId() {
         return id;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 }
