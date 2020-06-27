@@ -38,7 +38,7 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/slinakm/FBU_Flixster/blob/master/portrait.gif' title='Video Walkthrough' width='' alt='Portrait' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [Kap](getkap.co).
 
 ## Notes
 
